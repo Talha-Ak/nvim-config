@@ -15,12 +15,10 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local opts = {
+require("util").lazy_file()
+require("lazy").setup("plugins", {
     ui = {
         border = "rounded",
         title = " Lazy Package Manager ",
-        backdrop = 100,
     },
-}
-
-require("lazy").setup("plugins", opts)
+})
