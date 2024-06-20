@@ -1,6 +1,7 @@
 return {
     {
         "neovim/nvim-lspconfig",
+        event = "LazyFile",
         dependencies = {
             -- Automatically install LSPs and related tools to stdpath for neovim
             "williamboman/mason.nvim",
@@ -8,7 +9,22 @@ return {
             "WhoIsSethDaniel/mason-tool-installer.nvim",
 
             -- Useful status updates for LSP.
-            { "j-hui/fidget.nvim", event = "VimEnter", config = true },
+            {
+                "j-hui/fidget.nvim",
+                opts = {
+                    progress = {
+                        display = {
+                            done_icon = "",
+                        },
+                    },
+                    notification = {
+                        window = {
+                            winblend = 0,
+                        },
+                    },
+                },
+                config = true,
+            },
         },
         config = function()
             --  This function gets run when an LSP attaches to a particular buffer.
@@ -116,7 +132,7 @@ return {
     },
     {
         "stevearc/conform.nvim",
-        event = { "BufWritePre" },
+        lazy = true,
         cmd = { "ConformInfo" },
         keys = {
             {
@@ -132,7 +148,7 @@ return {
             notify_on_error = false,
             -- Currently using LSP formatting. Custom formatters can be set here.
             formatters_by_ft = {
-                -- lua = { "lua_ls" },
+                lua = { "stylua" },
             },
         },
     },
