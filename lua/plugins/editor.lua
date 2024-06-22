@@ -25,38 +25,39 @@ return {
                 "nvim-telescope/telescope-fzf-native.nvim",
                 build = "make",
                 cond = function()
-                    return vim.fn.executable "make" == 1
+                    return vim.fn.executable("make") == 1
                 end,
             },
             {
                 "nvim-tree/nvim-web-devicons",
-                enabled = vim.g.have_nerd_font
+                enabled = vim.g.have_nerd_font,
             },
         },
         config = function()
-            require('telescope').setup {
+            require("telescope").setup({
                 extensions = {
-                    ['ui-select'] = {
-                        require('telescope.themes').get_dropdown(),
+                    ["ui-select"] = {
+                        require("telescope.themes").get_dropdown(),
                     },
                 },
-            }
+            })
 
-          -- Enable Telescope extensions if they are installed
-            pcall(require('telescope').load_extension, 'fzf')
-            pcall(require('telescope').load_extension, 'ui-select')
+            -- Enable Telescope extensions if they are installed
+            pcall(require("telescope").load_extension, "fzf")
+            pcall(require("telescope").load_extension, "ui-select")
 
             local builtin = require("telescope.builtin")
             vim.keymap.set("n", "<C-p>", builtin.git_files, {})
             vim.keymap.set("n", "<leader>sf", builtin.find_files, {})
             vim.keymap.set("n", "<leader>sg", builtin.live_grep, {})
-        end
+        end,
     },
     {
         "folke/todo-comments.nvim",
         cmd = { "TodoTrouble", "TodoTelescope" },
         event = "LazyFile",
         config = true,
+        -- stylua: ignore
         keys = {
             { "]t",         function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
             { "[t",         function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
@@ -70,10 +71,12 @@ return {
         config = true,
     },
     {
+        "tpope/vim-fugitive",
+    },
+    {
         "nmac427/guess-indent.nvim",
         event = "LazyFile",
-        config = true
-
+        config = true,
     },
     {
         "github/copilot.vim",
