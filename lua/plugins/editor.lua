@@ -70,7 +70,10 @@ return {
         config = true,
     },
     {
-        "tpope/vim-sleuth",
+        "nmac427/guess-indent.nvim",
+        event = "LazyFile",
+        config = true
+
     },
     {
         "github/copilot.vim",
