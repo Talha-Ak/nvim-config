@@ -1,3 +1,10 @@
+local C = require("catppuccin.palettes").get_palette("mocha")
+local custom_theme = require("catppuccin.utils.lualine")("mocha")
+custom_theme.normal.c.bg = C.mantle
+custom_theme.inactive.a.bg = C.mantle
+custom_theme.inactive.b.bg = C.mantle
+custom_theme.inactive.c.bg = C.mantle
+
 return {
     {
         "nvim-lualine/lualine.nvim",
@@ -9,11 +16,17 @@ return {
         end,
         opts = {
             options = {
-                theme = "catppuccin",
+                theme = custom_theme,
                 section_separators = "",
                 component_separators = "|",
             },
             sections = {
+                lualine_a = {
+                    {
+                        "mode",
+                        icon = "",
+                    },
+                },
                 lualine_c = {
                     {
                         "filename",
