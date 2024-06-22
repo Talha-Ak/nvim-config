@@ -2,12 +2,35 @@ return {
     {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        event = "VeryLazy",
+        -- event = "VeryLazy",
         init = function()
-                -- set an empty statusline till lualine loads
-                vim.o.statusline = " "
+            -- set an empty statusline till lualine loads
+            vim.o.statusline = " "
         end,
-        opts = {},
+        opts = {
+            options = {
+                theme = "catppuccin",
+                section_separators = "",
+                component_separators = "|",
+            },
+            sections = {
+                lualine_c = {
+                    {
+                        "filename",
+                        path = 1,
+                    },
+                },
+            },
+            inactive_sections = {
+                lualine_c = {
+                    {
+                        "filename",
+                        path = 1,
+                    },
+                },
+            },
+            extensions = { "oil" },
+        },
     },
     {
         "lukas-reineke/indent-blankline.nvim",
