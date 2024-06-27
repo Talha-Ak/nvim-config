@@ -18,12 +18,15 @@ require("lazy").setup("plugins", {
         title = " Lazy Package Manager ",
     },
     performance = {
-        disabled_plugins = {
-            "gzip",
-            "tarPlugin",
-            "toHtml",
-            "tutor",
-            "zipPlugin",
+        rtp = {
+            disabled_plugins = {
+                "gzip",
+                "netrwPlugin",
+                "tarPlugin",
+                "tohtml",
+                "tutor",
+                "zipPlugin",
+            },
         },
     },
 })

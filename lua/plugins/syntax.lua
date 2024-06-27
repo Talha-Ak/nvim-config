@@ -17,7 +17,7 @@ return {
     {
         "echasnovski/mini.pairs",
         version = false,
-        event = "VeryLazy",
+        event = "InsertEnter",
         config = true
     },
 }

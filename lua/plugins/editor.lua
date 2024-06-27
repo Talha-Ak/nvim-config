@@ -16,7 +16,6 @@ return {
         -- TODO: LazyVim has a fn that detects .git and changes cmd between git_files and find_files
         -- https://github.com/LazyVim/LazyVim/blob/dde4a9dcdf49719c67642d09847dbaf7f9c7a156/lua/lazyvim/plugins/extras/editor/telescope.lua
         "nvim-telescope/telescope.nvim",
-        event = "VimEnter",
         branch = "0.1.x",
         dependencies = {
             "nvim-lua/plenary.nvim",
@@ -33,6 +32,12 @@ return {
                 enabled = vim.g.have_nerd_font,
             },
         },
+        cmd = "Telescope",
+        keys = {
+            { "<C-p>",      function() require("telescope.builtin").git_files()  end, desc = "Find git files" },
+            { "<leader>sf", function() require("telescope.builtin").find_files() end, desc = "Find files" },
+            { "<leader>sg", function() require("telescope.builtin").live_grep()  end, desc = "Grep" },
+        },
         config = function()
             require("telescope").setup({
                 extensions = {
@@ -45,11 +50,6 @@ return {
             -- Enable Telescope extensions if they are installed
             pcall(require("telescope").load_extension, "fzf")
             pcall(require("telescope").load_extension, "ui-select")
-
-            local builtin = require("telescope.builtin")
-            vim.keymap.set("n", "<C-p>", builtin.git_files, {})
-            vim.keymap.set("n", "<leader>sf", builtin.find_files, {})
-            vim.keymap.set("n", "<leader>sg", builtin.live_grep, {})
         end,
     },
     {
@@ -72,6 +72,7 @@ return {
     },
     {
         "tpope/vim-fugitive",
+        event = "LazyFile",
     },
     {
         "nmac427/guess-indent.nvim",
