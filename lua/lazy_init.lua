@@ -14,6 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 require("util").lazy_file()
 require("lazy").setup("plugins", {
     ui = {
+        browser = "sensible-browser",
         border = "rounded",
         title = " Lazy Package Manager ",
     },
