@@ -1,9 +1,4 @@
-local C = require("catppuccin.palettes").get_palette("mocha")
-local custom_theme = require("catppuccin.utils.lualine")("mocha")
-custom_theme.normal.c.bg = C.mantle
-custom_theme.inactive.a.bg = C.mantle
-custom_theme.inactive.b.bg = C.mantle
-custom_theme.inactive.c.bg = C.mantle
+
 
 return {
     {
@@ -16,7 +11,7 @@ return {
         end,
         opts = {
             options = {
-                theme = custom_theme,
+                theme = require("catppuccin.utils.lualine")("mocha"),
                 section_separators = "",
                 component_separators = "|",
             },
@@ -24,7 +19,7 @@ return {
                 lualine_a = {
                     {
                         "mode",
-                        icon = "",
+                        icon = "",
                     },
                 },
                 lualine_c = {
