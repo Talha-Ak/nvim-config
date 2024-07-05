@@ -1,10 +1,11 @@
+-- Adapted from kickstart.nvim
 return {
     {
         "neovim/nvim-lspconfig",
         event = "LazyFile",
         dependencies = {
-            -- Automatically install LSPs and related tools to stdpath for neovim
-            "williamboman/mason.nvim",
+            -- Automatically install LSPs and related tools to stdpath for Neovim
+            { "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
             "williamboman/mason-lspconfig.nvim",
             "WhoIsSethDaniel/mason-tool-installer.nvim",
 
@@ -23,7 +24,6 @@ return {
                         },
                     },
                 },
-                config = true,
             },
         },
         config = function()
@@ -80,15 +80,34 @@ return {
                     -- Highlight references of word under your cursor when idle.
                     local client = vim.lsp.get_client_by_id(event.data.client_id)
                     if client and client.server_capabilities.documentHighlightProvider then
+                        local highlight_augroup =
+                            vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
                         vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
                             buffer = event.buf,
+                            group = highlight_augroup,
                             callback = vim.lsp.buf.document_highlight,
                         })
 
                         vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
                             buffer = event.buf,
+                            group = highlight_augroup,
                             callback = vim.lsp.buf.clear_references,
                         })
+
+                        vim.api.nvim_create_autocmd("LspDetach", {
+                            group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+                            callback = function(event2)
+                                vim.lsp.buf.clear_references()
+                                vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+                            end,
+                        })
+                    end
+
+                    -- Toggle inlay hints
+                    if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+                        map("<leader>th", function()
+                            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+                        end, "[T]oggle Inlay [H]ints")
                     end
                 end,
             })
@@ -100,21 +119,9 @@ return {
                 lua_ls = {
                     settings = {
                         Lua = {
-                            runtime = { version = "LuaJIT" },
-                            workspace = {
-                                checkThirdParty = false,
-                                library = {
-                                    "${3rd}/luv/library",
-                                    unpack(vim.api.nvim_get_runtime_file("", true)),
-                                },
-                                -- If lua_ls is really slow on your computer, you can try this instead:
-                                -- library = { vim.env.VIMRUNTIME },
-                            },
                             completion = {
                                 callSnippet = "Replace",
                             },
-                            -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-                            -- diagnostics = { disable = { "missing-fields" } },
                         },
                     },
                 },
@@ -147,7 +154,7 @@ return {
     },
     {
         "stevearc/conform.nvim",
-        lazy = true,
+        lazy = false,
         cmd = { "ConformInfo" },
         keys = {
             {
@@ -161,6 +168,16 @@ return {
         },
         opts = {
             notify_on_error = false,
+            format_on_save = function(bufnr)
+                -- Disable "format_on_save lsp_fallback" for languages that don't
+                -- have a well standardized coding style. You can add additional
+                -- languages here or re-enable it for the disabled ones.
+                local disable_filetypes = { c = true, cpp = true }
+                return {
+                    timeout_ms = 500,
+                    lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+                }
+            end,
             -- Currently using LSP formatting. Custom formatters can be set here.
             formatters_by_ft = {
                 lua = { "stylua" },
