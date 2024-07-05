@@ -6,12 +6,10 @@ return {
             -- Adds completion capabilities.
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-path",
-            -- "rafamadriz/friendly-snippets",
-            "onsails/lspkind.nvim",
+            "rafamadriz/friendly-snippets",
+            "onsails/lspkind.nvim", -- Icons
         },
         opts = function()
-            -- vim.api.nvim_set_hl(0, "CmpItemMenu", { link: "Comment" })
-
             local cmp = require("cmp")
             return {
                 snippet = {
