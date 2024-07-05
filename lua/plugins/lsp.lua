@@ -70,6 +70,7 @@ return {
 
                     map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
+                    -- This is now default in 0.10
                     map("K", vim.lsp.buf.hover, "Hover Documentation")
 
                     -- WARN: This is not Goto Definition, this is Goto Declaration.
